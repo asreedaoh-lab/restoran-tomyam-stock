@@ -3,116 +3,591 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f5ff">
 <title>Tomyam | รายการซื้อของ</title>
+
 <style>
+:root{
+  --bg:#f7f5ff;
+  --green:#24866d;
+  --green-light:#e4f7ee;
+  --purple:#8171dc;
+  --purple-light:#eeeaff;
+  --pink:#ffedf2;
+  --yellow:#fff5d9;
+  --blue:#eaf3ff;
+  --text:#29364a;
+  --muted:#8290a3;
+  --white:#fff;
+  --border:#ececf4;
+  --shadow:0 5px 20px rgba(69,62,119,.07);
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5f8;color:#243047}
-header{background:#183b35;color:white;padding:22px 16px}
-header h1{margin:0;font-size:25px}
-header p{margin:7px 0 0;color:#d9e8e3}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:linear-gradient(160deg,#f8f5ff 0%,#f2f9ff 55%,#f6fff8 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+  padding:25px 18px 24px;
+  color:white;
+  background:linear-gradient(125deg,#7769d8,#9a83e8 55%,#70b9bc);
+  border-radius:0 0 27px 27px;
+  position:relative;
+  overflow:hidden;
+}
+header:after{
+  content:"";
+  position:absolute;
+  width:170px;height:170px;
+  border-radius:50%;
+  background:#ffffff16;
+  right:-45px;top:-70px;
+}
+.header-inner{max-width:850px;margin:auto;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{
+  width:51px;height:51px;
+  border-radius:17px;
+  display:grid;place-items:center;
+  background:#ffffff26;
+  font-size:27px;
+  animation:float 3s ease-in-out infinite;
+}
+h1{font-size:24px;margin:0;font-weight:800}
+header p{margin:7px 0 0;color:#f4f0ff;font-size:14px}
+.header-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:16px;padding:7px 12px;
+  border:1px solid #ffffff44;
+  background:#ffffff19;
+  border-radius:30px;font-size:12px;
+}
 main{max-width:850px;margin:auto;padding:16px}
-.panel{background:white;border-radius:15px;padding:16px;margin-bottom:15px;box-shadow:0 3px 12px #0000000a}
-label{display:block;font-weight:bold;margin-bottom:8px}
-select,input{width:100%;padding:12px;border:1px solid #d5dce5;border-radius:9px;font-size:16px;background:white}
-.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-h2{font-size:19px;margin:0 0 14px}
-.item{background:#fff;border:1px solid #e3e8ee;border-radius:12px;padding:13px;margin:10px 0}
-.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.name{font-weight:bold;font-size:16px}
-.unit{font-size:12px;color:#718096}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.need{margin-top:10px;padding:10px;background:#eef7f0;border-radius:8px;color:#21633d;font-weight:bold}
-button{border:0;border-radius:10px;padding:13px 16px;font-size:16px;font-weight:bold;cursor:pointer}
-.primary{background:#18765b;color:white;width:100%;margin-top:14px}
-.secondary{background:#e9eef2;color:#263746}
-.note{font-size:13px;color:#687587;line-height:1.6}
-#status{margin-top:12px;font-size:14px}
-@media(max-width:480px){.toolbar{grid-template-columns:1fr}.fields{gap:8px}}
+.panel{
+  background:var(--white);
+  border:1px solid #ffffff;
+  border-radius:21px;
+  padding:17px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+label{
+  display:block;
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:8px;
+  color:#56647a;
+}
+select,input{
+  width:100%;
+  padding:12px;
+  border:1px solid #e5e5f0;
+  border-radius:12px;
+  font-size:15px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+}
+select:focus,input:focus{
+  border-color:#a89be9;
+  box-shadow:0 0 0 3px #9484e91b;
+}
+.section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+}
+.heading-left{display:flex;align-items:center;gap:10px}
+.heading-icon{
+  width:42px;height:42px;border-radius:14px;
+  display:grid;place-items:center;
+  font-size:22px;background:var(--purple-light);
+}
+h2{font-size:18px;margin:0}
+.subtitle{font-size:12px;color:var(--muted);margin-top:4px}
+.search-button{
+  width:45px;height:45px;flex-shrink:0;
+  border:0;border-radius:15px;
+  color:#6d5bca;background:var(--purple-light);
+  display:grid;place-items:center;
+  transition:transform .2s,background .2s;
+}
+.search-button:active{transform:scale(.91)}
+.search-button svg{width:22px;height:22px}
+.search-wrap{display:none;margin-bottom:14px}
+.search-wrap.show{display:block;animation:fadeIn .2s ease}
+.search-input-wrap{position:relative}
+.search-input-wrap input{padding-right:42px}
+.clear-search{
+  position:absolute;right:7px;top:50%;
+  transform:translateY(-50%);
+  border:0;background:#f0eef9;color:#6d5bca;
+  width:30px;height:30px;border-radius:10px;
+}
+.summary{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:15px;
+}
+.summary-box{
+  padding:13px;border-radius:15px;
+  display:flex;align-items:center;gap:10px;
+}
+.summary-box.need-summary{background:var(--pink)}
+.summary-box.ok-summary{background:var(--green-light)}
+.summary-icon{font-size:23px}
+.summary-label{font-size:11px;color:#758195}
+.summary-value{font-size:20px;font-weight:800;margin-top:3px}
+.item{
+  position:relative;overflow:hidden;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:14px;
+  margin:11px 0;
+  transition:transform .2s,box-shadow .2s;
+}
+.item:active{transform:scale(.992)}
+.item.need-item{border-left:4px solid #f0a2b1}
+.item.ok-item{border-left:4px solid #76c8a1}
+.item-top{
+  display:flex;justify-content:space-between;
+  gap:10px;align-items:center;
+}
+.product-info{display:flex;align-items:center;gap:10px;min-width:0}
+.product-icon{
+  width:43px;height:43px;flex-shrink:0;
+  display:grid;place-items:center;
+  border-radius:14px;font-size:22px;
+  background:#f0efff;
+  animation:float 4s ease-in-out infinite;
+}
+.product-name{font-size:15px;font-weight:800;line-height:1.4}
+.product-thai{font-size:12px;color:#7f8ba0;margin-top:3px}
+.product-unit{font-size:11px;color:#8a93a4;margin-top:3px}
+.status{
+  flex-shrink:0;font-size:11px;font-weight:800;
+  padding:7px 9px;border-radius:20px;
+}
+.status.need{background:var(--pink);color:#b34d69}
+.status.ok{background:var(--green-light);color:#27815c}
+.fields{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:15px;
+}
+.fields input{padding:11px;font-size:16px;font-weight:700}
+.field-label{font-size:12px;margin-bottom:6px}
+.field-label.stock{color:#64748b}
+.field-label.buy{color:#ca6680}
+.field-label.used{color:#8b73cc}
+.field-label.target{color:#348b77}
+.need-box{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;flex-wrap:wrap;
+  padding:11px;margin-top:12px;
+  border-radius:12px;background:#f5f3ff;
+  font-size:12px;
+}
+.need-number{font-weight:800;color:#6d5bca;font-size:15px}
+.remaining{color:#53627a}
+.primary{
+  width:100%;margin-top:12px;padding:14px;
+  border:0;border-radius:14px;
+  background:linear-gradient(110deg,#7869d9,#9982e8);
+  color:white;font-weight:800;font-size:15px;
+  box-shadow:0 5px 12px #8373d52b;
+}
+.primary:active{transform:scale(.99)}
+.note{font-size:12px;color:#8a95a6;line-height:1.7;margin:13px 0 0}
+#status{
+  margin-top:12px;padding:10px;
+  border-radius:10px;font-size:13px;
+  color:#27815c;background:#eaf8f0;
+  display:none;
+}
+#status.show{display:block}
+.empty{
+  text-align:center;padding:30px 10px;color:#8591a4;
+}
+.empty-icon{font-size:35px;margin-bottom:8px}
+footer{text-align:center;color:#9ba4b3;font-size:11px;padding:4px 15px 25px}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:480px){
+  main{padding:13px}
+  header{padding:23px 17px;border-radius:0 0 24px 24px}
+  h1{font-size:22px}
+  .panel{padding:14px;border-radius:18px}
+  .toolbar{grid-template-columns:1fr}
+  .fields{gap:9px}
+  .item{padding:12px}
+  .product-name{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation:none!important;transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
 </style>
 </head>
+
 <body>
 <header>
-  <h1>🛒 Tomyam Stock</h1>
-  <p>รายการซื้อของและตรวจนับสินค้า</p>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🛒</div>
+      <div>
+        <h1>Tomyam Stock</h1>
+        <p>Senarai Belian · รายการซื้อของ</p>
+      </div>
+    </div>
+    <div class="header-badge">✨ Semak stok harian · ตรวจนับสินค้าประจำวัน</div>
+  </div>
 </header>
+
 <main>
   <section class="panel">
     <div class="toolbar">
       <div>
-        <label for="branch">📍 สถานที่ / สาขา</label>
+        <label for="branch">📍 สาขา / Cawangan</label>
         <select id="branch">
           <option value="1">Tomyam No.1</option>
           <option value="2">Tomyam No.2</option>
         </select>
       </div>
       <div>
-        <label for="date">📅 วันที่</label>
+        <label for="date">📅 วันที่ / Tarikh</label>
         <input id="date" type="date">
       </div>
     </div>
   </section>
+
   <section class="panel">
-    <h2>📦 รายการสินค้า</h2>
-    <input id="search" type="search" placeholder="🔎 ค้นหาสินค้า..." oninput="render()">
+    <div class="section-heading">
+      <div class="heading-left">
+        <div class="heading-icon">🧺</div>
+        <div>
+          <h2>Senarai Barang</h2>
+          <div class="subtitle">รายการสินค้า · Product list</div>
+        </div>
+      </div>
+      <button class="search-button" id="searchToggle"
+        aria-label="ค้นหาสินค้า" aria-expanded="false"
+        title="ค้นหาสินค้า">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.5" stroke-linecap="round">
+          <circle cx="10.8" cy="10.8" r="6.8"></circle>
+          <path d="m16 16 5 5"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="search-wrap" id="searchWrap">
+      <div class="search-input-wrap">
+        <input id="search" type="search"
+          placeholder="Cari barang... ค้นหาสินค้า"
+          aria-label="ค้นหาสินค้า">
+        <button class="clear-search" id="clearSearch"
+          aria-label="ล้างคำค้นหา">×</button>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-box need-summary">
+        <span class="summary-icon">🛍️</span>
+        <div>
+          <div class="summary-label">Perlu beli · ควรซื้อ</div>
+          <div class="summary-value" id="needCount">0</div>
+        </div>
+      </div>
+      <div class="summary-box ok-summary">
+        <span class="summary-icon">🌿</span>
+        <div>
+          <div class="summary-label">Cukup · เพียงพอ</div>
+          <div class="summary-value" id="okCount">0</div>
+        </div>
+      </div>
+    </div>
+
     <div id="items"></div>
-    <button class="primary" onclick="save()">💾 บันทึกข้อมูลในเครื่องนี้</button>
-    <p class="note">เวอร์ชันเริ่มต้นนี้เก็บข้อมูลในเบราว์เซอร์ของเครื่องที่ใช้งาน ยังไม่ซิงก์กับเครื่องอื่น</p>
-    <div id="status"></div>
+
+    <button class="primary" id="saveButton">
+      💾 Simpan Data · บันทึกข้อมูล
+    </button>
+
+    <p class="note">
+      ℹ️ Data disimpan dalam pelayar peranti ini sahaja.
+      <br>
+      ข้อมูลเก็บไว้ในเบราว์เซอร์ของเครื่องนี้เท่านั้น
+      ยังไม่ซิงก์กับเครื่องอื่น
+    </p>
+    <div id="status" role="status"></div>
   </section>
 </main>
+
+<footer>Tomyam Stock · Semak stok dengan mudah 🌷</footer>
+
 <script>
 const products=[
-["หมี่เหลือง","Yellow noodles"],["ก๋วยเตี๋ยว","Rice noodles"],
-["กระเทียม","Garlic"],["เฉาก๊วย","Grass jelly"],
-["แอปเปิ้ล","Apple"],["ส้ม","Orange"],["ปลาแช่แข็ง","Frozen fish"],
-["ลิ้นจี่กระป๋อง","Canned lychee"],["แตงโม","Watermelon"],
-["กะหล่ำปลี","Cabbage"],["กะหล่ำดอกสีขาว","Cauliflower"],
-["แครอท","Carrot"],["ผักกาดกวางตุ้ง","Choy sum"],
-["ผักบุ้ง","Water spinach"],["สับปะรด","Pineapple"],
-["พริกหยวกเขียว","Green bell pepper"],["แตงกวา","Cucumber"],
-["พริกเขียว","Green chilli"],["พริกแดง","Red chilli"],
-["มะนาว","Lime"],["ส้มจี๊ด","Calamansi"],
-["ถั่วฝักยาว","Long beans"],["ขิง","Ginger"],["ข่า","Galangal"],
-["ถั่วงอก","Bean sprouts"],["มะม่วงสุก","Ripe mango"],
-["มะม่วงดิบ","Unripe mango"],["มะเขือเทศ","Tomato"],
-["ไข่ไก่","Eggs"],["ลูกชิ้น","Meatballs"],["ตะไคร้","Lemongrass"],
-["สตรอว์เบอร์รี","Strawberry"],["กีวี","Kiwi"],["กาแฟ","Coffee"]
+["หมี่เหลือง","Yellow noodles","🍜"],
+["ก๋วยเตี๋ยว","Rice noodles","🍜"],
+["กระเทียม","Garlic","🧄"],
+["เฉาก๊วย","Grass jelly","🧋"],
+["แอปเปิ้ล","Apple","🍎"],
+["ส้ม","Orange","🍊"],
+["ปลาแช่แข็ง","Frozen fish","🐟"],
+["ลิ้นจี่กระป๋อง","Canned lychee","🥫"],
+["แตงโม","Watermelon","🍉"],
+["กะหล่ำปลี","Cabbage","🥬"],
+["กะหล่ำดอกสีขาว","Cauliflower","🥦"],
+["แครอท","Carrot","🥕"],
+["ผักกาดกวางตุ้ง","Choy sum","🥬"],
+["ผักบุ้ง","Water spinach","🌿"],
+["สับปะรด","Pineapple","🍍"],
+["พริกหยวกเขียว","Green bell pepper","🫑"],
+["แตงกวา","Cucumber","🥒"],
+["พริกเขียว","Green chilli","🌶️"],
+["พริกแดง","Red chilli","🌶️"],
+["มะนาว","Lime","🍋"],
+["ส้มจี๊ด","Calamansi","🍊"],
+["ถั่วฝักยาว","Long beans","🫘"],
+["ขิง","Ginger","🫚"],
+["ข่า","Galangal","🌿"],
+["ถั่วงอก","Bean sprouts","🌱"],
+["มะม่วงสุก","Ripe mango","🥭"],
+["มะม่วงดิบ","Unripe mango","🥭"],
+["มะเขือเทศ","Tomato","🍅"],
+["ไข่ไก่","Chicken eggs","🥚"],
+["ลูกชิ้น","Meatballs","🍡"],
+["ตะไคร้","Lemongrass","🌿"],
+["สตรอว์เบอร์รี","Strawberry","🍓"],
+["กีวี","Kiwi","🥝"],
+["กาแฟ","Coffee","☕"]
 ];
-const dateEl=document.getElementById('date');
-dateEl.value=new Date().toLocaleDateString('en-CA');
-function key(){return 'tomyam-'+document.getElementById('branch').value+'-'+dateEl.value}
+
+const dateEl=document.getElementById("date");
+const branchEl=document.getElementById("branch");
+const searchEl=document.getElementById("search");
+const itemsEl=document.getElementById("items");
+const statusEl=document.getElementById("status");
+
+function localDate(){
+  const now=new Date();
+  const y=now.getFullYear();
+  const m=String(now.getMonth()+1).padStart(2,"0");
+  const d=String(now.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+dateEl.value=localDate();
+
+function key(){
+  return "tomyam-"+branchEl.value+"-"+dateEl.value;
+}
+
+function readData(){
+  try{
+    return JSON.parse(localStorage.getItem(key())||"{}");
+  }catch(e){
+    return {};
+  }
+}
+
+function numberValue(value){
+  const n=Number(value);
+  return Number.isFinite(n)?Math.max(0,n):0;
+}
+
+function calculate(d){
+  const opening=numberValue(d.opening??0);
+  const bought=numberValue(d.bought??0);
+  const used=numberValue(d.used??0);
+  const target=numberValue(d.target??1);
+  const remaining=opening+bought-used;
+  const need=Math.max(0,target-remaining);
+  return {opening,bought,used,target,remaining,need};
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,ch=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[ch]);
+}
+
 function render(){
- const q=document.getElementById('search').value.toLowerCase();
- let data={};
- try{data=JSON.parse(localStorage.getItem(key())||'{}')}catch(e){}
- document.getElementById('items').innerHTML=products.map((p,i)=>{
- if(!(p[0]+' '+p[1]).toLowerCase().includes(q))return '';
- const d=data[i]||{};
- const opening=d.opening??0,bought=d.bought??0,used=d.used??0;
- const need=Math.max(0,Number(d.target??1)-Math.max(0,Number(opening)+Number(bought)-Number(used)));
- return `<div class="item">
- <div class="itemtop"><span class="name">${p[0]}</span><span class="unit">${p[1]}</span></div>
- <div class="fields">
- <div><label>ของคงเหลือ</label><input type="number" min="0" step="any" value="${opening}" data-i="${i}" data-f="opening" onchange="update(${i},'opening',this.value)"></div>
- <div><label>ซื้อเพิ่ม</label><input type="number" min="0" step="any" value="${bought}" data-i="${i}" data-f="bought" onchange="update(${i},'bought',this.value)"></div>
- <div><label>ใช้ไป</label><input type="number" min="0" step="any" value="${used}" data-i="${i}" data-f="used" onchange="update(${i},'used',this.value)"></div>
- <div><label>เป้าหมายคงเหลือ</label><input type="number" min="0" step="any" value="${d.target??1}" data-i="${i}" data-f="target" onchange="update(${i},'target',this.value)"></div>
- </div><div class="need">คงเหลือหลังใช้: ${Number(opening)+Number(bought)-Number(used)} · ควรซื้อเพิ่ม: ${need}</div>
- </div>`;
- }).join('');
+  const q=searchEl.value.trim().toLocaleLowerCase();
+  const data=readData();
+  let needCount=0;
+  let okCount=0;
+
+  const rows=products.map((p,i)=>{
+    const d=data[i]||{};
+    const c=calculate(d);
+    if(c.need>0)needCount++;
+    else okCount++;
+
+    return {p,i,d,c};
+  });
+
+  document.getElementById("needCount").textContent=needCount;
+  document.getElementById("okCount").textContent=okCount;
+
+  rows.sort((a,b)=>{
+    const aNeed=a.c.need>0?0:1;
+    const bNeed=b.c.need>0?0:1;
+    return aNeed-bNeed||a.i-b.i;
+  });
+
+  const filtered=rows.filter(({p})=>
+    (p[0]+" "+p[1]).toLocaleLowerCase().includes(q)
+  );
+
+  if(filtered.length===0){
+    itemsEl.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">🔎</div>
+        <div>Tiada barang dijumpai</div>
+        <div style="font-size:12px;margin-top:5px">ไม่พบสินค้าที่ค้นหา</div>
+      </div>`;
+    return;
+  }
+
+  itemsEl.innerHTML=filtered.map(({p,i,d,c})=>{
+    const needs=c.need>0;
+    const cardClass=needs?"need-item":"ok-item";
+    const statusClass=needs?"need":"ok";
+    const statusText=needs?"Perlu beli":"Cukup";
+    return `
+      <article class="item ${cardClass}">
+        <div class="item-top">
+          <div class="product-info">
+            <div class="product-icon">${p[2]}</div>
+            <div>
+              <div class="product-name">${escapeHTML(p[1])}</div>
+              <div class="product-thai">${escapeHTML(p[0])}</div>
+              <div class="product-unit">Unit / หน่วย</div>
+            </div>
+          </div>
+          <span class="status ${statusClass}">${statusText}</span>
+        </div>
+
+        <div class="fields">
+          <div>
+            <label class="field-label stock" for="opening-${i}">
+              Stok awal · ของคงเหลือ
+            </label>
+            <input id="opening-${i}" type="number" min="0" step="any"
+              inputmode="decimal" value="${c.opening}"
+              onchange="update(${i},'opening',this.value)">
+          </div>
+          <div>
+            <label class="field-label buy" for="bought-${i}">
+              Beli · ซื้อเพิ่ม
+            </label>
+            <input id="bought-${i}" type="number" min="0" step="any"
+              inputmode="decimal" value="${c.bought}"
+              onchange="update(${i},'bought',this.value)">
+          </div>
+          <div>
+            <label class="field-label used" for="used-${i}">
+              Digunakan · ใช้ไป
+            </label>
+            <input id="used-${i}" type="number" min="0" step="any"
+              inputmode="decimal" value="${c.used}"
+              onchange="update(${i},'used',this.value)">
+          </div>
+          <div>
+            <label class="field-label target" for="target-${i}">
+              Sasaran · เป้าหมาย
+            </label>
+            <input id="target-${i}" type="number" min="0" step="any"
+              inputmode="decimal" value="${c.target}"
+              onchange="update(${i},'target',this.value)">
+          </div>
+        </div>
+
+        <div class="need-box">
+          <span class="remaining">
+            Baki / คงเหลือ:
+            <strong>${Number(c.remaining.toFixed(3))}</strong>
+          </span>
+          <span>
+            Perlu beli / ควรซื้อ:
+            <span class="need-number">${Number(c.need.toFixed(3))}</span>
+          </span>
+        </div>
+      </article>`;
+  }).join("");
 }
+
 function update(i,f,v){
- let data={};try{data=JSON.parse(localStorage.getItem(key())||'{}')}catch(e){}
- data[i]=data[i]||{opening:0,bought:0,used:0,target:1};
- data[i][f]=Math.max(0,Number(v)||0);
- localStorage.setItem(key(),JSON.stringify(data));
- render();
+  const data=readData();
+  data[i]=data[i]||{opening:0,bought:0,used:0,target:1};
+  data[i][f]=numberValue(v);
+
+  try{
+    localStorage.setItem(key(),JSON.stringify(data));
+    statusEl.textContent="Data disimpan secara automatik ✓ · บันทึกข้อมูลแล้ว";
+    statusEl.classList.add("show");
+  }catch(e){
+    statusEl.textContent="Tidak dapat menyimpan data · บันทึกข้อมูลไม่สำเร็จ";
+    statusEl.classList.add("show");
+  }
+  render();
 }
+
 function save(){
- document.getElementById('status').textContent='บันทึกข้อมูลในเบราว์เซอร์ของเครื่องนี้แล้ว ✓';
+  try{
+    localStorage.setItem(key(),JSON.stringify(readData()));
+    statusEl.textContent="Data berjaya disimpan ✓ · บันทึกข้อมูลเรียบร้อยแล้ว";
+  }catch(e){
+    statusEl.textContent="Tidak dapat menyimpan data · บันทึกข้อมูลไม่สำเร็จ";
+  }
+  statusEl.classList.add("show");
 }
-document.getElementById('branch').addEventListener('change',render);
-dateEl.addEventListener('change',render);
+
+document.getElementById("searchToggle").addEventListener("click",()=>{
+  const wrap=document.getElementById("searchWrap");
+  const button=document.getElementById("searchToggle");
+  const show=!wrap.classList.contains("show");
+  wrap.classList.toggle("show",show);
+  button.setAttribute("aria-expanded",String(show));
+  if(show){
+    searchEl.focus();
+  }else{
+    searchEl.value="";
+    render();
+  }
+});
+
+document.getElementById("clearSearch").addEventListener("click",()=>{
+  searchEl.value="";
+  render();
+  searchEl.focus();
+});
+
+searchEl.addEventListener("input",render);
+branchEl.addEventListener("change",render);
+dateEl.addEventListener("change",render);
+document.getElementById("saveButton").addEventListener("click",save);
+
 render();
 </script>
 </body>
