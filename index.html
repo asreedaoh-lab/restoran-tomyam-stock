@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tomyam | รายการซื้อของ</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f8;color:#243047}
+header{background:#183b35;color:white;padding:22px 16px}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;color:#d9e8e3}
+main{max-width:850px;margin:auto;padding:16px}
+.panel{background:white;border-radius:15px;padding:16px;margin-bottom:15px;box-shadow:0 3px 12px #0000000a}
+label{display:block;font-weight:bold;margin-bottom:8px}
+select,input{width:100%;padding:12px;border:1px solid #d5dce5;border-radius:9px;font-size:16px;background:white}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+h2{font-size:19px;margin:0 0 14px}
+.item{background:#fff;border:1px solid #e3e8ee;border-radius:12px;padding:13px;margin:10px 0}
+.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.name{font-weight:bold;font-size:16px}
+.unit{font-size:12px;color:#718096}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.need{margin-top:10px;padding:10px;background:#eef7f0;border-radius:8px;color:#21633d;font-weight:bold}
+button{border:0;border-radius:10px;padding:13px 16px;font-size:16px;font-weight:bold;cursor:pointer}
+.primary{background:#18765b;color:white;width:100%;margin-top:14px}
+.secondary{background:#e9eef2;color:#263746}
+.note{font-size:13px;color:#687587;line-height:1.6}
+#status{margin-top:12px;font-size:14px}
+@media(max-width:480px){.toolbar{grid-template-columns:1fr}.fields{gap:8px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🛒 Tomyam Stock</h1>
+  <p>รายการซื้อของและตรวจนับสินค้า</p>
+</header>
+<main>
+  <section class="panel">
+    <div class="toolbar">
+      <div>
+        <label for="branch">📍 สถานที่ / สาขา</label>
+        <select id="branch">
+          <option value="1">Tomyam No.1</option>
+          <option value="2">Tomyam No.2</option>
+        </select>
+      </div>
+      <div>
+        <label for="date">📅 วันที่</label>
+        <input id="date" type="date">
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>📦 รายการสินค้า</h2>
+    <input id="search" type="search" placeholder="🔎 ค้นหาสินค้า..." oninput="render()">
+    <div id="items"></div>
+    <button class="primary" onclick="save()">💾 บันทึกข้อมูลในเครื่องนี้</button>
+    <p class="note">เวอร์ชันเริ่มต้นนี้เก็บข้อมูลในเบราว์เซอร์ของเครื่องที่ใช้งาน ยังไม่ซิงก์กับเครื่องอื่น</p>
+    <div id="status"></div>
+  </section>
+</main>
+<script>
+const products=[
+["หมี่เหลือง","Yellow noodles"],["ก๋วยเตี๋ยว","Rice noodles"],
+["กระเทียม","Garlic"],["เฉาก๊วย","Grass jelly"],
+["แอปเปิ้ล","Apple"],["ส้ม","Orange"],["ปลาแช่แข็ง","Frozen fish"],
+["ลิ้นจี่กระป๋อง","Canned lychee"],["แตงโม","Watermelon"],
+["กะหล่ำปลี","Cabbage"],["กะหล่ำดอกสีขาว","Cauliflower"],
+["แครอท","Carrot"],["ผักกาดกวางตุ้ง","Choy sum"],
+["ผักบุ้ง","Water spinach"],["สับปะรด","Pineapple"],
+["พริกหยวกเขียว","Green bell pepper"],["แตงกวา","Cucumber"],
+["พริกเขียว","Green chilli"],["พริกแดง","Red chilli"],
+["มะนาว","Lime"],["ส้มจี๊ด","Calamansi"],
+["ถั่วฝักยาว","Long beans"],["ขิง","Ginger"],["ข่า","Galangal"],
+["ถั่วงอก","Bean sprouts"],["มะม่วงสุก","Ripe mango"],
+["มะม่วงดิบ","Unripe mango"],["มะเขือเทศ","Tomato"],
+["ไข่ไก่","Eggs"],["ลูกชิ้น","Meatballs"],["ตะไคร้","Lemongrass"],
+["สตรอว์เบอร์รี","Strawberry"],["กีวี","Kiwi"],["กาแฟ","Coffee"]
+];
+const dateEl=document.getElementById('date');
+dateEl.value=new Date().toLocaleDateString('en-CA');
+function key(){return 'tomyam-'+document.getElementById('branch').value+'-'+dateEl.value}
+function render(){
+ const q=document.getElementById('search').value.toLowerCase();
+ let data={};
+ try{data=JSON.parse(localStorage.getItem(key())||'{}')}catch(e){}
+ document.getElementById('items').innerHTML=products.map((p,i)=>{
+ if(!(p[0]+' '+p[1]).toLowerCase().includes(q))return '';
+ const d=data[i]||{};
+ const opening=d.opening??0,bought=d.bought??0,used=d.used??0;
+ const need=Math.max(0,Number(d.target??1)-Math.max(0,Number(opening)+Number(bought)-Number(used)));
+ return `<div class="item">
+ <div class="itemtop"><span class="name">${p[0]}</span><span class="unit">${p[1]}</span></div>
+ <div class="fields">
+ <div><label>ของคงเหลือ</label><input type="number" min="0" step="any" value="${opening}" data-i="${i}" data-f="opening" onchange="update(${i},'opening',this.value)"></div>
+ <div><label>ซื้อเพิ่ม</label><input type="number" min="0" step="any" value="${bought}" data-i="${i}" data-f="bought" onchange="update(${i},'bought',this.value)"></div>
+ <div><label>ใช้ไป</label><input type="number" min="0" step="any" value="${used}" data-i="${i}" data-f="used" onchange="update(${i},'used',this.value)"></div>
+ <div><label>เป้าหมายคงเหลือ</label><input type="number" min="0" step="any" value="${d.target??1}" data-i="${i}" data-f="target" onchange="update(${i},'target',this.value)"></div>
+ </div><div class="need">คงเหลือหลังใช้: ${Number(opening)+Number(bought)-Number(used)} · ควรซื้อเพิ่ม: ${need}</div>
+ </div>`;
+ }).join('');
+}
+function update(i,f,v){
+ let data={};try{data=JSON.parse(localStorage.getItem(key())||'{}')}catch(e){}
+ data[i]=data[i]||{opening:0,bought:0,used:0,target:1};
+ data[i][f]=Math.max(0,Number(v)||0);
+ localStorage.setItem(key(),JSON.stringify(data));
+ render();
+}
+function save(){
+ document.getElementById('status').textContent='บันทึกข้อมูลในเบราว์เซอร์ของเครื่องนี้แล้ว ✓';
+}
+document.getElementById('branch').addEventListener('change',render);
+dateEl.addEventListener('change',render);
+render();
+</script>
+</body>
+</html>
