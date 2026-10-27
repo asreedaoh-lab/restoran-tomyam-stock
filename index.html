@@ -242,7 +242,55 @@ footer{text-align:center;color:#9ba4b3;font-size:11px;padding:4px 15px 25px}
     scroll-behavior:auto!important;
   }
 }
-</style>
+/* กล่องสินค้า: สีไล่ระดับและเงานุ่ม */
+.item {
+background: linear-gradient(145deg, #ffffff 0%, #f4f8ff 100%);
+border: 1px solid rgba(210, 220, 240, 0.9);
+border-radius: 18px;
+box-shadow: 0 5px 14px rgba(40, 60, 100, 0.09);
+position: relative;
+overflow: hidden;
+isolation: isolate;
+}
+
+/* แสงสีจาง ๆ ด้านหลังกล่องสินค้า */
+.item::before {
+content: “”;
+position: absolute;
+top: -35px;
+right: -35px;
+width: 110px;
+height: 110px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(160, 190, 255, 0.18), transparent 70%);
+pointer-events: none;
+z-index: -1;
+}
+
+/* กล่องสินค้าที่ต้องซื้อ */
+.item.need-item {
+border-left: 4px solid #f0a2b1;
+background: linear-gradient(145deg, #fff 0%, #fff3f5 100%);
+}
+
+/* กล่องสินค้าที่มีเพียงพอ */
+.item.ok-item {
+border-left: 4px solid #76c8a1;
+background: linear-gradient(145deg, #fff 0%, #effbf5 100%);
+}
+
+/* ช่องตัวเลขให้อ่านง่าย */
+.item input {
+border-radius: 10px;
+border: 1px solid #dce3f0;
+background: rgba(255, 255, 255, 0.95);
+}
+
+/* เงาเมื่อแตะกล่องสินค้า */
+.item:active {
+transform: scale(0.992);
+box-shadow: 0 3px 8px rgba(40, 60, 100, 0.12);
+}</style>
 </head>
 
 <body>
